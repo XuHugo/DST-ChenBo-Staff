@@ -1,5 +1,5 @@
-name = "Hound Quick Start"
-description = "Adds a button to the HUD that summons a hound near the player."
+name = "召唤陈伯"
+description = "出来面对我."
 author = "Kent"
 version = "0.0.1"
 forumthread = ""
@@ -13,7 +13,7 @@ dst_compatible = true
 icon_atlas = "modicon.xml"
 icon = "modicon.tex"
 
-server_filter_tags = {"Quick Start"}
+server_filter_tags = {"Summoner"}
 
 ----------------------
 -- General settings --
