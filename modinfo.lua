@@ -1,5 +1,5 @@
-name = "召唤猪崽"
-description = "出来面对我."
+name = "陈伯全能王法杖"
+description = "可以召唤猪崽保护你."
 author = "Kent"
 version = "0.0.1"
 forumthread = ""

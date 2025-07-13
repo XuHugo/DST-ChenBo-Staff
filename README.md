@@ -1,2 +1,11 @@
-# A new character in Don’t Starve: the Summoner.  
-His name is Chen Bo, and he can summon up to six piglets. Who is he?  
+# 陈伯全能王法杖
+
+本模组新增了一根可以召唤猪仔跟随你的神奇法杖！
+
+- 在工具栏用简单材料合成召唤陈伯全能王法杖。
+- 使用法杖可以召唤猪人跟随并保护你。
+- 每个玩家最多同时拥有6只召唤的猪仔。
+- 猪仔死亡后可以再次召唤新的猪仔补充。
+- 法杖支持自定义物品栏图标，也可使用游戏内置美术。
+
+拥有属于你的猪仔军团，让生存变得更轻松！
