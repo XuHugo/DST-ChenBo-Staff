@@ -85,8 +85,8 @@ end)
 
 print("[DEBUG] 动作系统设置完成")
 
-GLOBAL.STRINGS.NAMES.SUMMONSTAFF = "召唤法杖"
-GLOBAL.STRINGS.RECIPE_DESC.SUMMONSTAFF = "一根可以召唤猪崽的神秘法杖。"
+GLOBAL.STRINGS.NAMES.SUMMONSTAFF = "陈伯法杖"
+GLOBAL.STRINGS.RECIPE_DESC.SUMMONSTAFF = "一根可以召唤猪崽的全能王法杖。"
 GLOBAL.STRINGS.CHARACTERS.GENERIC.DESCRIBE.SUMMONSTAFF = "出来面对我！"
 GLOBAL.STRINGS.ACTIONS.SUMMONPIG = "召唤猪仔"
 print("字符串定义完成：召唤法杖")
@@ -104,6 +104,8 @@ AddPrefabPostInit("world", function(inst)
         GLOBAL.TECH.NONE,
         {
           tabs = { GLOBAL.RECIPETABS.TOOLS },
+          image     = "images/inventoryimages/summonstaff.tex",                         -- 图块名 tabtools  icestaff
+          atlas     = "images/inventoryimages/summonstaff.xml",    
           nounlock = false,
         },
         { "TOOLS", "MODS" }

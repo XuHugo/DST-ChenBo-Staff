@@ -64,6 +64,57 @@ local function onuse(inst, user)
                 table.insert(pigs, pig)
                 player_pigs[user] = pigs
 
+                -- 随机喊一句话
+                local lines = {
+                    {"出来面对我!", {1, 0.5, 0, 1}},      -- 橙色
+                    {"就这?一把龟", {0, 0, 1, 1}},        -- 蓝色
+                    {"就这?一把猪", {1, 0, 0, 1}},        -- 红色
+                    {"我们是亚军", {0, 1, 0, 1}},          -- 绿色
+                    {"旭你真猛", {0, 0, 1, 1}},            -- 蓝色
+                    {"小明订房!", {0.5, 0, 0.5, 1}},       -- 紫色
+                    {"就这?一把猴", {1, 0, 0, 1}},         -- 红色
+                    {"你没有发烧吧？", {1, 0.4, 0.7, 1}}    -- 粉色
+                }
+                local idx = math.random(#lines)
+                local text, color = lines[idx][1], lines[idx][2]
+                if pig.components.talker then
+                    pig.allow_mod_talk = true
+                    pig.components.talker:Say(text, 9, nil, true, nil, color)
+                end
+
+                -- 定时让猪人说话
+                if pig.talkertask ~= nil then
+                    pig.talkertask:Cancel()
+                end
+                pig.talkertask = pig:DoPeriodicTask(math.random(12, 18), function(inst)
+                    if inst.components.talker then
+                        local lines = {
+                            {"出来面对我!", {1, 0.5, 0, 1}},
+                            {"就这?一把龟", {0, 0, 1, 1}},
+                            {"就这?一把猪", {1, 0, 0, 1}},
+                            {"我们是亚军", {0, 1, 0, 1}},
+                            {"旭你真猛", {0, 0, 1, 1}},
+                            {"小明订房!", {0.5, 0, 0.5, 1}},
+                            {"就这?一把猴", {1, 0, 0, 1}},
+                            {"你没有发烧吧？", {1, 0.4, 0.7, 1}}
+                        }
+                        local idx = math.random(#lines)
+                        local text, color = lines[idx][1], lines[idx][2]
+                        inst.allow_mod_talk = true
+                        inst.components.talker:Say(text, 9, nil, true, nil, color)
+                    end
+                end)
+
+                -- 猪人死亡或移除时，取消定时任务
+                local function cancel_talkertask(inst)
+                    if inst.talkertask ~= nil then
+                        inst.talkertask:Cancel()
+                        inst.talkertask = nil
+                    end
+                end
+                pig:ListenForEvent("onremove", cancel_talkertask)
+                pig:ListenForEvent("death", cancel_talkertask)
+
                 -- 监听猪人死亡或移除
                 pig:ListenForEvent("onremove", function()
                     cleanup_dead_pigs(user)
@@ -112,8 +163,8 @@ local function fn()
     print("[summonstaff] Adding components (mastersim)")
     inst:AddComponent("inspectable")
     inst:AddComponent("inventoryitem")
-    inst.components.inventoryitem.imagename = "summonstaff"
-    inst.components.inventoryitem.atlasname = "images/inventoryimages/summonstaff.xml"
+    inst.components.inventoryitem.imagename = "icestaff"
+    inst.components.inventoryitem.atlasname = "images/inventoryimages.xml"
 
     inst:AddComponent("finiteuses")
     inst.components.finiteuses:SetMaxUses(12)
