@@ -1,7 +1,7 @@
 name = "陈伯全能王法杖"
 description = "可以召唤猪崽保护你."
 author = "Kent"
-version = "0.0.1"
+version = "0.0.2"
 forumthread = ""
 
 api_version = 10

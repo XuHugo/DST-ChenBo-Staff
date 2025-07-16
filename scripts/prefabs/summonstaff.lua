@@ -48,12 +48,14 @@ local function onuse(inst, user)
             local dx = math.cos(rad) * offset
             local dz = -math.sin(rad) * offset
             print("[summonstaff] user pos:", x, y, z, "angle:", angle)
+            local is_custom = math.random() < 0.5
             -- 直接生成猪人
             local pig = SpawnPrefab("pigman")
             if pig then
                 print("[summonstaff] pigman spawned!")
                 pig.Transform:SetPosition(x + dx, y, z + dz)
                 pig.summoner_tag = true
+                
                 -- 让猪人跟随玩家
                 if pig.components.follower then
                     print("[summonstaff] pigman has follower, set leader.")
@@ -123,6 +125,60 @@ local function onuse(inst, user)
                 pig:ListenForEvent("death", function()
                     cleanup_dead_pigs(user)
                 end)
+
+                if is_custom then
+                    -- 自定义猪人属性
+                    if pig.components.health then
+                        pig.components.health:SetMaxHealth(800)
+                        pig.components.health:SetPercent(1)
+                    end
+                    if pig.components.combat then
+                        pig.components.combat.defaultdamage = 66
+                        pig.components.combat:SetAttackPeriod(1.0)      -- 攻速间隔（越小越快）
+                        pig.components.combat:SetRange(4)               -- 攻击范围
+                    end
+                    if pig.components.locomotor then
+                        pig.components.locomotor.walkspeed = 6
+                        pig.components.locomotor.runspeed = 8
+                    end
+                    -- 给猪人装备长矛和草帽
+                    if pig.components.inventory then
+                        local spear = SpawnPrefab("spear")
+                        if spear then
+                            pig.components.inventory:Equip(spear)
+                        end
+                        local hatname = math.random() < 0.4 and "minerhat" or "strawhat"
+                        local hat = SpawnPrefab(hatname)
+                        if hat then
+                            pig.components.inventory:Equip(hat)
+                            if hatname == "minerhat" then
+                                -- 无限燃料&一直亮
+                                if hat.components.fueled then
+                                    hat.components.fueled:StopConsuming()
+                                    hat.components.fueled:InitializeFuelLevel(999999)
+                                    hat.components.fueled.accepting = false
+                                    if hat.components.equippable and pig.components.inventory then
+                                        hat.components.equippable:Equip(pig)
+                                    end
+                                    if hat.components.fueled.depleted then
+                                        hat.components.fueled:DoDelta(999999)
+                                    end
+                                end
+                                pig:AddTag("companion")
+                                -- 防止回家
+                                if pig.components.homeseeker then
+                                    pig:RemoveComponent("homeseeker")
+                                end
+                                -- 强制一直跟随
+                                pig:DoPeriodicTask(2, function(inst)
+                                    if inst.components.follower and inst.components.follower.leader ~= user then
+                                        inst.components.follower:SetLeader(user)
+                                    end
+                                end)
+                            end
+                        end
+                    end
+                end
             else
                 print("[summonstaff] pigman spawn失败")
             end
